@@ -1,4 +1,4 @@
-# handmade
+# Rusty Hero
 
 Handmade Hero in Rust with SDL2 serving as the platform layer. Do I really want to write much X11 code? Well... maybe later. Platform is Arch Linux, and we'll see how portable it ends up.
 
