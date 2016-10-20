@@ -19,3 +19,4 @@ As far as rusting goes, I'm only just beginning to corrode.
  - [Handmade Hero](https://handmadehero.org)
  - [The SDL Port on GitHub](https://github.com/HandmadeHero/sdl) if you pre-ordered (which you <a href="https://transactions.sendowl.com/packages/6671/8CB9DE0F/purchase?gateway=Stripe">should</a>)
  - [Handmade Penguin](https://davidgow.net/handmadepenguin/default.html)
+ - [rust-sdl2](https://github.com/AngryLawyer/rust-sdl2)
