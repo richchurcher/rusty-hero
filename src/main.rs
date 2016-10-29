@@ -1,18 +1,12 @@
 extern crate sdl2;
 
-//pub fn main() {
-    //let sdl_context = sdl2::init().unwrap();
-    //let video_subsystem = sdl_context.video().unwrap();
-    //let window = video_subsystem.window("Test", 100, 100).build().unwrap();
-    //let renderer = window.renderer().build().unwrap();
-    //println!("{}", renderer.viewport().width());
-//}
 use sdl2::event::{Event, WindowEventId};
 use sdl2::keyboard::Keycode;
-use sdl2::render::Renderer;
+use sdl2::render::{Renderer, TextureAccess};
 
 fn update_window(renderer: &mut Renderer) {
-    print!("{}, {}", renderer.viewport().width(), renderer.viewport().height());
+    let viewport = renderer.viewport();
+    let texture = renderer.create_texture(sdl2::pixels::PixelFormatEnum::ARGB8888, TextureAccess::Streaming, viewport.width(), viewport.height());
     renderer.clear();
     renderer.present();
 }
