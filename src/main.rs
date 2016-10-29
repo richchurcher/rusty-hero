@@ -28,11 +28,11 @@ pub fn main() {
 
     let mut event_pump = sdl_context.event_pump().unwrap();
 
-    'running: loop {
+    'game: loop {
         for event in event_pump.poll_iter() {
             match event {
                 Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
-                    break 'running
+                    break 'game
                 },
                 Event::Window { win_event_id: WindowEventId::Resized, .. } => {
                     blank(&mut renderer, is_white);
