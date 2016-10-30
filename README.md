@@ -20,3 +20,28 @@ As far as rusting goes, I'm only just beginning to corrode.
  - [The SDL Port on GitHub](https://github.com/HandmadeHero/sdl) if you pre-ordered (which you <a href="https://transactions.sendowl.com/packages/6671/8CB9DE0F/purchase?gateway=Stripe">should</a>)
  - [Handmade Penguin](https://davidgow.net/handmadepenguin/default.html)
  - [rust-sdl2](https://github.com/AngryLawyer/rust-sdl2)
+
+
+## Notes
+
+### 003
+
+It's been interesting learning about Rust's approach to allocating on the heap. If you don't know the size of the buffer you want, the alternatives seem to be either:
+
+```rust
+    let bytes = width * height * 4;
+    let pixels = vec![0; bytes as usize];
+    
+    let mut texture = renderer.create_texture_streaming(
+        PixelFormatEnum::ARGB8888,
+        width, height).unwrap();
+    texture.update(None, &pixels[..], pitch as usize).unwrap();
+```
+
+or, for a buffer whose size definitely isn't going to change:
+
+```rust
+    let pixels = vec![0; bytes as usize].into_boxed_slice();
+```
+
+Either works. `Vec` always uses the heap, so the only real difference seems to be the inability to resize. There's no need to manually free buffers created in this way. Looking forward to finding out more about this over time, or if anyone's got any... _pointers_.
