@@ -11,7 +11,8 @@ fn update_window(renderer: &mut Renderer) {
     let height = viewport.height();
     let pitch = width * 4;
     let bytes = pitch * height;
-    let pixels = vec![0; bytes as usize];
+
+    let pixels = vec![0; bytes as usize].into_boxed_slice();
 
     let mut texture = renderer.create_texture_streaming(
         PixelFormatEnum::ARGB8888,
