@@ -20,6 +20,7 @@ As far as rusting goes, I'm only just beginning to corrode.
  - [The SDL Port on GitHub](https://github.com/HandmadeHero/sdl) if you pre-ordered (which you <a href="https://transactions.sendowl.com/packages/6671/8CB9DE0F/purchase?gateway=Stripe">should</a>)
  - [Handmade Penguin](https://davidgow.net/handmadepenguin/default.html)
  - [rust-sdl2](https://github.com/AngryLawyer/rust-sdl2)
+ - [lldb.nvim](https://github.com/critiqjo/lldb.nvim) - Neovim LLDB integration
 
 
 ## Notes
@@ -44,4 +45,5 @@ or, for a buffer whose size definitely isn't going to change:
     let pixels = vec![0; bytes as usize].into_boxed_slice();
 ```
 
-Either works. `Vec` always uses the heap, so the only real difference seems to be the inability to resize. There's no need to manually free buffers created in this way. Looking forward to finding out more about this over time, or if anyone's got any... _pointers_.
+Either works. `Vec` always uses the heap, so the only real difference seems to be the inability to resize. There's no need to manually free buffers created in this way. The way I've done it does seem slow... there's a slightly noticeable lag between when the window is resized and when it redraws. Looking forward to finding out more about this over time, or if anyone's got any... _pointers_.
+ 
