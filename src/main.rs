@@ -5,6 +5,12 @@ use sdl2::keyboard::Keycode;
 use sdl2::pixels::PixelFormatEnum;
 use sdl2::render::Renderer;
 
+fn colour_pixels(pixels: &mut Vec<u8>) {
+    for pixel in pixels {
+      *pixel = 100;
+    }
+}
+
 fn update_window(renderer: &mut Renderer) {
     let viewport = renderer.viewport();
     let width = viewport.width();
@@ -12,7 +18,10 @@ fn update_window(renderer: &mut Renderer) {
     let pitch = width * 4;
     let bytes = pitch * height;
 
-    let pixels = vec![0; bytes as usize].into_boxed_slice();
+    //let pixels = vec![0u8; bytes as usize].into_boxed_slice();
+    let mut pixels = vec![199u8; bytes as usize];
+    colour_pixels(&mut pixels);
+
 
     let mut texture = renderer.create_texture_streaming(
         PixelFormatEnum::ARGB8888,
