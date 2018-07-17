@@ -1,18 +1,19 @@
 extern crate sdl2;
 
-use sdl2::event::{Event, WindowEventId};
+use sdl2::event::{Event, WindowEvent};
 use sdl2::keyboard::Keycode;
-use sdl2::pixels::PixelFormatEnum;
-use sdl2::render::Renderer;
+use sdl2::pixels::{Color, PixelFormatEnum};
+use sdl2::render::Canvas;
+use sdl2::video::Window;
 
 fn colour_pixels(pixels: &mut Vec<u8>) {
     for pixel in pixels {
-      *pixel = 100;
+        *pixel = 100;
     }
 }
 
-fn update_window(renderer: &mut Renderer) {
-    let viewport = renderer.viewport();
+fn update_window(canvas: &mut Canvas<Window>) {
+    let viewport = canvas.viewport();
     let width = viewport.width();
     let height = viewport.height();
     let pitch = width * 4;
@@ -22,38 +23,51 @@ fn update_window(renderer: &mut Renderer) {
     let mut pixels = vec![199u8; bytes as usize];
     colour_pixels(&mut pixels);
 
-
-    let mut texture = renderer.create_texture_streaming(
-        PixelFormatEnum::ARGB8888,
-        width, height).unwrap();
+    let texture_creator = canvas.texture_creator();
+    let mut texture = texture_creator
+        .create_texture_streaming(PixelFormatEnum::ARGB8888, width, height)
+        .unwrap();
     texture.update(None, &pixels[..], pitch as usize).unwrap();
 
-    renderer.clear();
-    renderer.present();
+    canvas.clear();
+    canvas.present();
 }
 
 pub fn main() {
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
-
-    let window = video_subsystem.window("Rusty Hero", 500, 500)
+    let window = video_subsystem
+        .window("Rusty Hero", 500, 500)
         .resizable()
         .build()
         .unwrap();
 
-    let mut renderer = window.renderer().build().unwrap();
+    let mut canvas = window
+        .into_canvas()
+        .target_texture()
+        .present_vsync()
+        .build()
+        .unwrap();
+
+    canvas.set_draw_color(Color::RGB(0, 0, 0));
+    canvas.clear();
+    canvas.present();
 
     let mut event_pump = sdl_context.event_pump().unwrap();
-
     'game: loop {
         for event in event_pump.poll_iter() {
             match event {
-                Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
-                    break 'game
-                },
-                Event::Window { win_event_id: WindowEventId::SizeChanged, .. } => {
-                    update_window(&mut renderer);
-                },
+                Event::Quit { .. }
+                | Event::KeyDown {
+                    keycode: Some(Keycode::Escape),
+                    ..
+                } => break 'game,
+                Event::Window {
+                    win_event: WindowEvent::SizeChanged(0, 0),
+                    ..
+                } => {
+                    update_window(&mut canvas);
+                }
                 _ => {}
             }
         }
